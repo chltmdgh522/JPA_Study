@@ -5,9 +5,7 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
 
-import java.util.List;
-
-public class JpaMain2 {
+public class JpaMain3 {
 
     public static void main(String[] args) {
 
@@ -18,20 +16,14 @@ public class JpaMain2 {
         tx.begin();
 
         try {
-            //비영속
-//            Member member= new Member();
-//            member.setName("승호");
-//            member.setId(101L);
+            Member member1=new Member(150L, "A");
+            Member member2=new Member(151L, "B");
 
-            //영속 상태 DB에 저장되는게 아님 영속성 컨텍스트에 저장
-            // em.persist(member);
+            em.persist(member1);
+            em.persist(member2);
 
-            //em.detach(member); //영속성 컨텍스트에서 분리 즉 준영속 상태
+            System.out.println("==================");
 
-            Member findMember = em.find(Member.class, 101L);
-            Member findMember1 = em.find(Member.class, 101L);
-            System.out.println("findMember.getId() = " + findMember.getId());
-            System.out.println("findMember.getId() = " + findMember1.getId());
             tx.commit(); //이떄 DB에 쿼리 날려서 저장함
         } catch (Exception e) {
             tx.rollback();

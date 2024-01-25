@@ -11,6 +11,15 @@ public class Member {
 
     private String name;
 
+    public Member(){
+
+    } //Jpa는 내부적으로 리플렉션이나 이런것들을 쓰기 때문에 동적으로 객체를 생성해야함
+
+    public Member(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public Long getId() {
         return id;
     }
