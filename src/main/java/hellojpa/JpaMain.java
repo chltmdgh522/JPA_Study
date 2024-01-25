@@ -15,10 +15,10 @@ public class JpaMain {
         tx.begin();
 
         try {
-//            Member member = new Member();
-//            member.setId(4L);
-//            member.setName("helloB");
-//            em.persist(member);
+            Member member = new Member();
+            member.setId(4L);
+            member.setName("helloB");
+            em.persist(member);
 
             Member findMember = em.find(Member.class, 3L); //조회
             findMember.setName("tmdgh이"); //여기서 트랜잭션 커밋하기 직전에 업데이트 쿼리를 날림
@@ -30,7 +30,7 @@ public class JpaMain {
             //전체조회 대상은 테이블이 아닌 객체임
 
 
-//            em.remove(findMember); //삭제
+            em.remove(findMember); //삭제
 
             System.out.println("findMember.getName() = " + findMember.getName());
 
