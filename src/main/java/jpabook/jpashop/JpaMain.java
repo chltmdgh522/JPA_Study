@@ -1,4 +1,4 @@
-package hellojpa;
+package jpabook.jpashop;
 
 import jakarta.persistence.*;
 
@@ -9,8 +9,20 @@ public class JpaMain {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
         EntityManager em = emf.createEntityManager();
         //code
+        EntityTransaction tx = em.getTransaction();
 
-        em.close();
+        tx.begin();
+
+        try {
+
+
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+        } finally {
+            em.close();
+
+        }
         emf.close();
     }
 }
