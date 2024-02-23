@@ -1,6 +1,8 @@
 package jpabook.jpashop;
 
 import jakarta.persistence.*;
+import jpabook.jpashop.jpadomain.Order;
+import jpabook.jpashop.jpadomain.OrderItem;
 
 public class JpaMain {
 
@@ -14,7 +16,8 @@ public class JpaMain {
         tx.begin();
 
         try {
-
+            Order order=new Order();
+            order.addOrderItem(new OrderItem());
 
             tx.commit();
         } catch (Exception e) {

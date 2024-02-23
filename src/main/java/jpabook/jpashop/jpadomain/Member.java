@@ -2,6 +2,9 @@ package jpabook.jpashop.jpadomain;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 public class Member {
     @Id
@@ -12,6 +15,9 @@ public class Member {
     private String city;
     private String street;
     private String zipcode;
+
+    @OneToMany(mappedBy = "member") //비지니스 적으로는 불필요하지만 예제니깐 ㅎㅎ
+    private List<Order> orders=new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -51,5 +57,13 @@ public class Member {
 
     public void setZipcode(String zipcode) {
         this.zipcode = zipcode;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 }
