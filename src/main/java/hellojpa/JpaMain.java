@@ -30,7 +30,7 @@ public class JpaMain {
 
             //조회
             Member findMember = em.find(Member.class, member.getId());
-            // Team findTeamId = em.find(Team.class, team.getId());
+            // Long findTemaId = findMember.getTeamId();
             // Team findTeam= em.find(Team.class, findTeamId);
             Team findTeam = findMember.getTeam();
 

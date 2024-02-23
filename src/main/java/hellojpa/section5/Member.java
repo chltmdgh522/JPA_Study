@@ -13,8 +13,8 @@ public class Member {
     @Column(name="USERNAME")
     private String userName;
 
-//    @Column(name="TEAM_ID")
-//    private Long teamId;
+    @Column(name="TEAM_ID")
+    private Long teamId;
 
     @ManyToOne //member입장에서는 many고 team입장에서는 원이다.
     @JoinColumn(name="TEAM_ID")
