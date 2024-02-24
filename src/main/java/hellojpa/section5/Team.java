@@ -15,7 +15,7 @@ public class Team {
 
     private String name;
 
-    @OneToMany(mappedBy = "team") //  team은 변수명
+    @OneToMany(mappedBy = "team") //  team은 변수명 //테이블의 영향 안끼침
     private List<Member> members=new ArrayList<>();
 
     public Long getId() {

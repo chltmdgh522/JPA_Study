@@ -34,11 +34,10 @@ public class JpaMain {
 
             em.flush();
             em.clear();
-
             Team findTeam = em.find(Team.class, team.getId());
             List<Member> members = findTeam.getMembers();
             //이시점에 쿼리가 또 날라감 member 쿼리 fc 없으면 안됨
-            //왜냐하면 영속성 컨텟흐트에 1차캐시로 저들이 저장되는데 members의 대한 정보가 없잔슴
+            //왜냐하면 영속성 컨텍스트에 1차캐시로 저들이 저장되는데 members의 대한 정보가 없잔슴
             //양방향일때는 양쪽에 다 세팅을 하자.
 
             for (Member m : members) {
