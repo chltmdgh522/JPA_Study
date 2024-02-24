@@ -2,6 +2,7 @@ package hellojpa.section6;
 
 import jakarta.persistence.*;
 
+import javax.management.ObjectName;
 import java.util.ArrayList;
 import java.util.List;
 
