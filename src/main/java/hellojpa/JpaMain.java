@@ -2,6 +2,7 @@ package hellojpa;
 
 import hellojpa.section6.Member;
 import hellojpa.section6.Team;
+import hellojpa.section7.Movie;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -18,14 +19,12 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Member member=new Member();
-            member.setUserName("승호");
-            em.persist(member);
-
-            Team team=new Team();
-            team.setName("TeamA");
-            team.getMembers().add(member);
-            em.persist(team);
+            Movie movie=new Movie();
+            movie.setDirector("승호얌");
+            movie.setActor("승ㅋ");
+            movie.setName("승호와 사라지다");
+            movie.setPrice(1687896);
+            em.persist(movie);
             tx.commit();
         } catch (Exception e) {
             tx.rollback();

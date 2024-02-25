@@ -6,7 +6,7 @@ import javax.management.ObjectName;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity(name = "TEAM6")
+//@Entity(name = "TEAM6")
 public class Team {
 
     @Id

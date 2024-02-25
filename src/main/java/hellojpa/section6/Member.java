@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity(name="MEMBER6")
+//@Entity(name="MEMBER6")
 public class Member {
 
     @Id
