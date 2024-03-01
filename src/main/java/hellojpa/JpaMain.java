@@ -2,6 +2,8 @@ package hellojpa;
 
 import hellojpa.section5.Member;
 import hellojpa.section5.Team;
+import hellojpa.section8.Child;
+import hellojpa.section8.Parent;
 import jakarta.persistence.*;
 import org.hibernate.Hibernate;
 
@@ -20,24 +22,26 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Team team=new Team();
-            team.setName("d");
+            Child child1=new Child();
+            Child child2=new Child();
 
-            Member member=new Member();
-            member.setUserName("승호");
-            member.setTeam(team);
+            Parent parent=new Parent();
+            parent.addChild(child1);
+            parent.addChild(child2);
 
+            em.persist(parent);
+//            em.persist(child1);
+//            em.persist(child2); //이렇게 하기 귀찮다 그래서 cascade를 쓰면 가능
 
-            em.persist(team);
-            em.persist(member);
             em.flush();
             em.clear();
 
-            Member findMember = em.find(Member.class, member.getId());
+            Parent findParent = em.find(Parent.class, parent.getId());
+            findParent.getChildList().remove(0);
+            em.remove(findParent);
 
-            System.out.println(findMember.getTeam().getClass()); // 지연로딩일 시 프록시로 가져온것을 확인할 수 있음
 
-            System.out.println(findMember.getTeam().getName()); // 지연로딩일 시 초기화가 일어나면서 팀 쿼리 호출
+
 
             tx.commit();
         } catch (Exception e) {
