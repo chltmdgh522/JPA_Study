@@ -1,6 +1,7 @@
 package hellojpa;
 
 import hellojpa.section5.Member;
+import hellojpa.section5.Team;
 import jakarta.persistence.*;
 import org.hibernate.Hibernate;
 
@@ -19,29 +20,24 @@ public class JpaMain {
         tx.begin();
 
         try {
+            Team team=new Team();
+            team.setName("d");
+
             Member member=new Member();
             member.setUserName("승호");
-            
+            member.setTeam(team);
+
+
+            em.persist(team);
             em.persist(member);
             em.flush();
             em.clear();
 
-            Member find=em.find(Member.class,member.getId());
+            Member findMember = em.find(Member.class, member.getId());
 
-            em.detach(find);
+            System.out.println(findMember.getTeam().getClass()); // 지연로딩일 시 프록시로 가져온것을 확인할 수 있음
 
-
-            System.out.println("find.getClass() = " + find.getClass());
-
-
-//            Member findMember = em.find(Member.class, member.getId());
-            Member findMember = em.getReference(Member.class, member.getId()); //이 값이 사용될때만 쿼리 나감
-//            System.out.println("findMember = " + findMember.getClass());
-//            System.out.println("findMember = " + findMember.getId());
-//            System.out.println("findMember = " + findMember.getUserName());
-
-            System.out.println(emf.getPersistenceUnitUtil().isLoaded(findMember)); // 프록시 초기화 여부 확인
-
+            System.out.println(findMember.getTeam().getName()); // 지연로딩일 시 초기화가 일어나면서 팀 쿼리 호출
 
             tx.commit();
         } catch (Exception e) {
