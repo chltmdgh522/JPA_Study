@@ -1,9 +1,8 @@
 package hellojpa;
 
-import hellojpa.section6.Member;
-import hellojpa.section6.Team;
-import hellojpa.section7.Movie;
+import hellojpa.section5.Member;
 import jakarta.persistence.*;
+import org.hibernate.Hibernate;
 
 import java.util.List;
 
@@ -20,14 +19,33 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Movie movie=new Movie();
-            movie.setDirector("승호얌");
-            movie.setActor("승ㅋ");
-            movie.setName("승호와 사라지다");
-            movie.setPrice(1687896);
-            em.persist(movie);
+            Member member=new Member();
+            member.setUserName("승호");
+            
+            em.persist(member);
+            em.flush();
+            em.clear();
+
+            Member find=em.find(Member.class,member.getId());
+
+            em.detach(find);
+
+
+            System.out.println("find.getClass() = " + find.getClass());
+
+
+//            Member findMember = em.find(Member.class, member.getId());
+            Member findMember = em.getReference(Member.class, member.getId()); //이 값이 사용될때만 쿼리 나감
+//            System.out.println("findMember = " + findMember.getClass());
+//            System.out.println("findMember = " + findMember.getId());
+//            System.out.println("findMember = " + findMember.getUserName());
+
+            System.out.println(emf.getPersistenceUnitUtil().isLoaded(findMember)); // 프록시 초기화 여부 확인
+
+
             tx.commit();
         } catch (Exception e) {
+            e.printStackTrace();
             tx.rollback();
         } finally {
             em.close(); //엔티티 매니저가 커넥션을 갖고 있어서 닫아줘야됨
