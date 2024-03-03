@@ -1,13 +1,9 @@
 package hellojpa;
 
-import hellojpa.section5.Member;
-import hellojpa.section5.Team;
-import hellojpa.section8.Child;
-import hellojpa.section8.Parent;
+import hellojpa.section9.Address;
+import hellojpa.section9.Member;
+import hellojpa.section9.Period;
 import jakarta.persistence.*;
-import org.hibernate.Hibernate;
-
-import java.util.List;
 
 
 public class JpaMain {
@@ -22,30 +18,15 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Child child1=new Child();
-            Child child2=new Child();
-
-            Parent parent=new Parent();
-            parent.addChild(child1);
-            parent.addChild(child2);
-
-            em.persist(parent);
-//            em.persist(child1);
-//            em.persist(child2); //이렇게 하기 귀찮다 그래서 cascade를 쓰면 가능
-
-            em.flush();
-            em.clear();
-
-            Parent findParent = em.find(Parent.class, parent.getId());
-            findParent.getChildList().remove(0);
-            em.remove(findParent);
-
-
+            Member member=new Member();
+            member.setUsername("최승호");
+            member.setHoneAddress(new Address("서울","경리단길","1000"));
+            member.setWordPeriod(new Period());
+            em.persist(member);
 
 
             tx.commit();
         } catch (Exception e) {
-            e.printStackTrace();
             tx.rollback();
         } finally {
             em.close(); //엔티티 매니저가 커넥션을 갖고 있어서 닫아줘야됨
