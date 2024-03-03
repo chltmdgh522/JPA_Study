@@ -1,6 +1,7 @@
 package hellojpa;
 
 import hellojpa.section9.Address;
+import hellojpa.section9.AddressEntity;
 import hellojpa.section9.Member;
 import hellojpa.section9.Period;
 import jakarta.persistence.*;
@@ -18,23 +19,39 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Address address=new Address("서울","경리단길","1000");
             Member member=new Member();
             member.setUsername("최승호");
-            member.setHoneAddress(address);
-            member.setWordPeriod(new Period());
+            member.setHoneAddress(new Address("서울","문화의거리","2000"));
+
+            member.getFavoriteFoods().add("치킨");
+            member.getFavoriteFoods().add("피자");
+            member.getFavoriteFoods().add("햄버거");
+
+            member.getAddressHistory().add(new AddressEntity("인천","문화의거리","2000"));
+            member.getAddressHistory().add(new AddressEntity("대구","문화의거리","2000"));
+
             em.persist(member);
 
-            Address copy=new Address(address.getCity(), address.getStreet(), address.getZipcode());
+            em.flush();
+            em.clear();
 
-            Member member2=new Member();
-            member2.setUsername("최승호");
-            member2.setHoneAddress(copy);
-            member2.setWordPeriod(new Period());
-            em.persist(member2);
+            System.out.println("==========================");
+            Member findMember = em.find(Member.class, member.getId()); //컬렉션들은 지연로딩만 됨
 
-            member.getHoneAddress().setCity("인천"); //side effect 발생 set 제거나 프라이빗으로 하기
+            //임베디드
+            // findMember.getHoneAddress().setCity("뉴서울");
+            Address a = findMember.getHoneAddress();
+            findMember.setHoneAddress(new Address("뉴서울", a.getStreet(), a.getZipcode())); // 새로 갈아끼워야됨
 
+            //String Set
+            findMember.getFavoriteFoods().remove("치킨");
+            findMember.getFavoriteFoods().add("김치찌개");
+
+            //주소 List
+            //findMember.getAddressHistory().remove(new Address("인천","문화의거리","2000"));
+            //equals 구현되어 있엉댜됨
+
+            // findMember.getAddressHistory().add(new Address("부평","문화의거리","2000"));
 
             tx.commit();
         } catch (Exception e) {
