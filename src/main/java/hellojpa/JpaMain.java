@@ -5,6 +5,11 @@ import hellojpa.section9.AddressEntity;
 import hellojpa.section9.Member;
 import hellojpa.section9.Period;
 import jakarta.persistence.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
+
+import java.util.List;
 
 
 public class JpaMain {
@@ -19,39 +24,15 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Member member=new Member();
-            member.setUsername("최승호");
-            member.setHoneAddress(new Address("서울","문화의거리","2000"));
+            // List<Member> resultList = em.createQuery("select m from MEMBER9 m where m.username like '%kim%'", Member.class).getResultList();
 
-            member.getFavoriteFoods().add("치킨");
-            member.getFavoriteFoods().add("피자");
-            member.getFavoriteFoods().add("햄버거");
+            //Criteria 사용 준비
+            CriteriaBuilder cb=em.getCriteriaBuilder(); //자바에서 제공해주는거임
+            CriteriaQuery<Member> query = cb.createQuery(Member.class);
+            Root<Member> m = query.from(Member.class);
 
-            member.getAddressHistory().add(new AddressEntity("인천","문화의거리","2000"));
-            member.getAddressHistory().add(new AddressEntity("대구","문화의거리","2000"));
-
-            em.persist(member);
-
-            em.flush();
-            em.clear();
-
-            System.out.println("==========================");
-            Member findMember = em.find(Member.class, member.getId()); //컬렉션들은 지연로딩만 됨
-
-            //임베디드
-            // findMember.getHoneAddress().setCity("뉴서울");
-            Address a = findMember.getHoneAddress();
-            findMember.setHoneAddress(new Address("뉴서울", a.getStreet(), a.getZipcode())); // 새로 갈아끼워야됨
-
-            //String Set
-            findMember.getFavoriteFoods().remove("치킨");
-            findMember.getFavoriteFoods().add("김치찌개");
-
-            //주소 List
-            //findMember.getAddressHistory().remove(new Address("인천","문화의거리","2000"));
-            //equals 구현되어 있엉댜됨
-
-            // findMember.getAddressHistory().add(new Address("부평","문화의거리","2000"));
+            CriteriaQuery<Member> cq = query.select(m).where(cb.equal(m.get("username"), "kim"));
+            em.createQuery(cq).getResultList();
 
             tx.commit();
         } catch (Exception e) {
