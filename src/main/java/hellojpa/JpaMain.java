@@ -1,9 +1,7 @@
 package hellojpa;
 
-import hellojpa.section10.Address;
+import hellojpa.section10.*;
 import hellojpa.section10.Member;
-import hellojpa.section10.MemberDto;
-import hellojpa.section10.Order;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -19,23 +17,35 @@ public class JpaMain {
         tx.begin();
 
         try {
-            for(int i=0; i<100; i++) {
-                Member member = new Member();
-                member.setUserName("최승호"+i);
-                member.setAge(25+i);
-                em.persist(member);
-            }
+            Team team = new Team();
+            team.setName("승호팀");
+
+            Member member = new Member();
+            member.setUserName("최승호");
+            member.setTeam(team);
+            member.setAge(25);
+
+            team.getMembers().add(member);
+
+            em.persist(member);
             em.flush();
             em.clear();
 
-            List<Member> resultList = em.createQuery("select m from Member m order by m.age desc ", Member.class)
-                    .setFirstResult(0)
-                    .setMaxResults(10)
+            List<Member> result = em.createQuery("select m from Member m inner join m.team t", Member.class)
                     .getResultList();
 
-            for (Member member1 : resultList) {
-                System.out.println(member1.getUserName());
-            }
+            List<Member> result2 = em.createQuery("select m from Member m left outer join m.team t", Member.class)
+                    .getResultList();
+
+            List<Member> result3 = em.createQuery("select m from Member m, Team t where m.userName = t.name", Member.class)
+                    .getResultList();
+
+            em.createQuery("select m from Member m left outer join m.team t where t.name='A'")
+                            .getResultList();
+
+            em.createQuery("select m from Member m left outer join Team t on m.userName= t.name")
+                    .getResultList(); //연관관계 없는 조인
+
 
 
             tx.commit();

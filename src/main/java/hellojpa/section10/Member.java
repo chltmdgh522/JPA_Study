@@ -11,8 +11,8 @@ public class Member {
 
     private int age;
 
-    @ManyToOne(cascade = CascadeType.ALL, optional = true)
-    @JoinColumn(name = "team_id")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "TEAM_ID")
     private Team team;
 
     public Long getId() {
