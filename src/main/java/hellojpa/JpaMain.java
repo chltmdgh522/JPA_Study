@@ -19,29 +19,25 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Member member =new Member();
-            member.setUserName("최승호");
-            member.setAge(25);
-            em.persist(member);
+            for(int i=0; i<100; i++) {
+                Member member = new Member();
+                member.setUserName("최승호"+i);
+                member.setAge(25+i);
+                em.persist(member);
+            }
             em.flush();
             em.clear();
 
-            // List<Address> resultList = em.createQuery("select o.address from Order o", Address.class).getResultList();
-
-            List resultList = em.createQuery("select m.userName, m.age from Member m").getResultList();
-            Object o = resultList.get(0);
-            Object[] result = (Object[]) o;
-            System.out.println(result[0]); //userName;
-            System.out.println(result[1]); //age
-
-
-            List<Object[]> resultList1 = em.createQuery("select m.userName, m.age from Member m").getResultList();
-
-            List<MemberDto> resultList2 = em.createQuery("select new hellojpa.section10.MemberDto(m.userName, m.age) from Member m", MemberDto.class)
+            List<Member> resultList = em.createQuery("select m from Member m order by m.age desc ", Member.class)
+                    .setFirstResult(0)
+                    .setMaxResults(10)
                     .getResultList();
 
-            MemberDto memberDto = resultList2.get(0);
-            System.out.println(memberDto.getAge());
+            for (Member member1 : resultList) {
+                System.out.println(member1.getUserName());
+            }
+
+
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
