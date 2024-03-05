@@ -1,20 +1,12 @@
 package hellojpa;
 
-import hellojpa.section9.Address;
-import hellojpa.section9.AddressEntity;
-import hellojpa.section9.Member;
-import hellojpa.section9.Period;
+import hellojpa.section10.Member;
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
 
 import java.util.List;
 
 
 public class JpaMain {
-
-
     public static void main(String[] args) {
 
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
@@ -24,15 +16,22 @@ public class JpaMain {
         tx.begin();
 
         try {
-            // List<Member> resultList = em.createQuery("select m from MEMBER9 m where m.username like '%kim%'", Member.class).getResultList();
+            Member member =new Member();
+            member.setUserName("최승호");
+            em.persist(member);
 
-            //Criteria 사용 준비
-            CriteriaBuilder cb=em.getCriteriaBuilder(); //자바에서 제공해주는거임
-            CriteriaQuery<Member> query = cb.createQuery(Member.class);
-            Root<Member> m = query.from(Member.class);
+            TypedQuery<Member> query = em.createQuery("select m from Member m", Member.class);
+            List<Member> resultList = query.getResultList();
+            Member singleResult = query.getSingleResult();
 
-            CriteriaQuery<Member> cq = query.select(m).where(cb.equal(m.get("username"), "kim"));
-            em.createQuery(cq).getResultList();
+            List<Member> result = em.createQuery("select m from Member m where m.userName=:username", Member.class)
+                    .setParameter("username", "최승호")
+                    .getResultList();
+
+
+            TypedQuery<String> query1 = em.createQuery("select m.userName from Member m", String.class);
+            Query query2 = em.createQuery("select m.userName, m.age from Member m");
+
 
             tx.commit();
         } catch (Exception e) {
