@@ -1,6 +1,9 @@
 package hellojpa;
 
+import hellojpa.section10.Address;
 import hellojpa.section10.Member;
+import hellojpa.section10.MemberDto;
+import hellojpa.section10.Order;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -18,21 +21,27 @@ public class JpaMain {
         try {
             Member member =new Member();
             member.setUserName("최승호");
+            member.setAge(25);
             em.persist(member);
+            em.flush();
+            em.clear();
 
-            TypedQuery<Member> query = em.createQuery("select m from Member m", Member.class);
-            List<Member> resultList = query.getResultList();
-            Member singleResult = query.getSingleResult();
+            // List<Address> resultList = em.createQuery("select o.address from Order o", Address.class).getResultList();
 
-            List<Member> result = em.createQuery("select m from Member m where m.userName=:username", Member.class)
-                    .setParameter("username", "최승호")
+            List resultList = em.createQuery("select m.userName, m.age from Member m").getResultList();
+            Object o = resultList.get(0);
+            Object[] result = (Object[]) o;
+            System.out.println(result[0]); //userName;
+            System.out.println(result[1]); //age
+
+
+            List<Object[]> resultList1 = em.createQuery("select m.userName, m.age from Member m").getResultList();
+
+            List<MemberDto> resultList2 = em.createQuery("select new hellojpa.section10.MemberDto(m.userName, m.age) from Member m", MemberDto.class)
                     .getResultList();
 
-
-            TypedQuery<String> query1 = em.createQuery("select m.userName from Member m", String.class);
-            Query query2 = em.createQuery("select m.userName, m.age from Member m");
-
-
+            MemberDto memberDto = resultList2.get(0);
+            System.out.println(memberDto.getAge());
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
