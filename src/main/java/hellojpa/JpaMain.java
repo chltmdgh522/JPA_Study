@@ -24,6 +24,7 @@ public class JpaMain {
             member.setUserName("최승호");
             member.setTeam(team);
             member.setAge(25);
+            member.setMemberType(MemberType.User);
 
             team.getMembers().add(member);
 
@@ -31,22 +32,17 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            List<Member> result = em.createQuery("select m from Member m inner join m.team t", Member.class)
+            //String query = "select m.userName, 'HELLO', TRUE from Member m "
+            //      + "where m.memberType=hellojpa.section10.MemberType.Admin";
+            String query = "select m.userName, 'HELLO', TRUE from Member m "
+                    + "where m.memberType=:userType";
+            List<Object[]> result = em.createQuery(query)
+                    .setParameter("userType",MemberType.User)
                     .getResultList();
 
-            List<Member> result2 = em.createQuery("select m from Member m left outer join m.team t", Member.class)
-                    .getResultList();
-
-            List<Member> result3 = em.createQuery("select m from Member m, Team t where m.userName = t.name", Member.class)
-                    .getResultList();
-
-            em.createQuery("select m from Member m left outer join m.team t where t.name='A'")
-                            .getResultList();
-
-            em.createQuery("select m from Member m left outer join Team t on m.userName= t.name")
-                    .getResultList(); //연관관계 없는 조인
-
-
+            for (Object[] objects : result) {
+                System.out.println(objects[1]);
+            }
 
             tx.commit();
         } catch (Exception e) {
