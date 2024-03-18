@@ -32,7 +32,8 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            String query = "select size(t.members) from Team t";
+            //String query = "select t.members from Team t";
+            String query = "select m.userName from Team t join t.members m";
 
             List<String> resultList = em.createQuery(query, String.class)
                     .getResultList();
