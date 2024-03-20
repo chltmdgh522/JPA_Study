@@ -19,29 +19,45 @@ public class JpaMain {
         try {
             Team team = new Team();
             team.setName("승호팀");
+            em.persist(team);
+
+            Team team1 = new Team();
+            team1.setName("호호팀");
+            em.persist(team1);
+
 
             Member member = new Member();
-            member.setUserName("최승호");
+            member.setUserName("최승호1");
             member.setTeam(team);
             member.setAge(25);
             member.setMemberType(MemberType.User);
-
-            team.getMembers().add(member);
-
             em.persist(member);
+
+            Member member2 = new Member();
+            member2.setUserName("최승호2");
+            member2.setTeam(team);
+            member2.setAge(251);
+            member2.setMemberType(MemberType.User);
+            em.persist(member2);
+
+            Member member3 = new Member();
+            member3.setUserName("최승호3");
+            member3.setTeam(team1);
+            member3.setAge(251);
+            member3.setMemberType(MemberType.User);
+            em.persist(member3);
+
             em.flush();
             em.clear();
 
-            //String query = "select t.members from Team t";
-            String query = "select m.userName from Team t join t.members m";
+            String query = "select t from Team t join fetch t.members";
 
-            List<String> resultList = em.createQuery(query, String.class)
+            List<Team> resultList = em.createQuery(query, Team.class)
                     .getResultList();
 
-            for (String s : resultList) {
-                System.out.println(s);
+            for (Team team33 : resultList) {
+                System.out.println("team= "+ team33.getName()+"||members " + team33.getMembers().size());
             }
-
 
             tx.commit();
         } catch (Exception e) {
