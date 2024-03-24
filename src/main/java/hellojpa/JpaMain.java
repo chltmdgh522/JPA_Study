@@ -50,24 +50,13 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            /* String query = "select m from Member m where m.id= :member123";
-
-            Member resultList = em.createQuery(query, Member.class)
-                    .setParameter("member123", member.getId())
-                    .getSingleResult();
-
-            System.out.println(resultList);
-            */
-            String query = "select m from Member m where m.team= :team";
-
-            List<Member> resultList = em.createQuery(query, Member.class)
-                    .setParameter("team", team)
+            List<Member> resultList = em.createNamedQuery("Member.findByUsername", Member.class)
+                    .setParameter("username", "최승호3")
                     .getResultList();
 
             for (Member member1 : resultList) {
                 System.out.println(member1);
             }
-
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
