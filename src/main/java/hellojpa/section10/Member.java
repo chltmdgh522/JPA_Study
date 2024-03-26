@@ -3,6 +3,10 @@ package hellojpa.section10;
 import jakarta.persistence.*;
 
 @Entity
+@NamedQuery(
+        name="Member.findByUsername",
+        query = "select m from Member m where m.userName=:username"
+)
 public class Member {
     @Id
     @GeneratedValue
@@ -56,5 +60,16 @@ public class Member {
 
     public void setMemberType(MemberType memberType) {
         this.memberType = memberType;
+    }
+
+    @Override
+    public String toString() {
+        return "Member{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", age=" + age +
+                ", team=" + team +
+                ", memberType=" + memberType +
+                '}';
     }
 }
