@@ -1,16 +1,17 @@
 package hellojpa.section9;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
-@Entity
+//@Entity
 public class AddressEntity {
 
     @Id
     @GeneratedValue
     private Long id;
 
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "member_id")
+//    private Member member;
     private Address address;
 
     public AddressEntity(String city, String street, String zip) {

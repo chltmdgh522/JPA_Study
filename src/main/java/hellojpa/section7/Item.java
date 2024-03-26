@@ -2,7 +2,7 @@ package hellojpa.section7;
 
 import jakarta.persistence.*;
 
-@Entity
+//@Entity
 // 중복되는 속성들을 다 하위로 보냄 즉 item 테이블 d없음 근데 쿼리 em.find 할때 union해서 다 뒤짐
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 // 이거 안쓰면 상속받은 애들 다 한테이블로 추가됨 즉 상속으로 나뉘게 해주는거 innerjoin

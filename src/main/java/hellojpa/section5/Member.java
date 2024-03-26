@@ -2,7 +2,7 @@ package hellojpa.section5;
 
 import jakarta.persistence.*;
 
-@Entity(name="MEMBER5")
+//@Entity(name="MEMBER5")
 public class Member {
 
     @Id
